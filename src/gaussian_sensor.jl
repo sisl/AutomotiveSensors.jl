@@ -11,7 +11,7 @@ FP/FN
 Late detection?
 Position noise depends on distance
 """
-@with_kw struct NoisySensor{P <: AbstractNoiseModel, V <: AbstractNoiseModel} <: AbstractSensor
+@with_kw struct GaussianSensor{P <: AbstractNoiseModel, V <: AbstractNoiseModel} <: AbstractSensor
     pos_noise::P = LinearNoise()
     vel_noise::V = LinearNoise()
     false_positive_rate::Float64 = 0.1
@@ -20,14 +20,14 @@ Position noise depends on distance
 end
 
 
-function measure(sensor::NoisySensor, ego::Vehicle, scene::Scene, env::E) where E <: OccludedEnv
+function measure(sensor::GaussianSensor, ego::Vehicle, scene::Scene, roadway::Roadway, obstacles::Vector{ConvexPolygon})
     obs = Vector{Vehicle}()
     sizehint!(obs, 10) #XXX
     for veh in scene
         if veh.id == ego.id
             continue
         end
-        zveh = measure(sensor, ego, veh, env, sensor.rng)
+        zveh = measure(sensor, ego, veh, roadway, obstacles, sensor.rng)
         if zveh != nothing 
             push!(obs, Vehicle(zveh, veh.def, veh.id))
         end
@@ -35,10 +35,10 @@ function measure(sensor::NoisySensor, ego::Vehicle, scene::Scene, env::E) where 
     return obs
 end
 
-function measure(sensor::NoisySensor, ego::Vehicle, veh::Vehicle, env::E, rng::AbstractRNG) where E <: OccludedEnv
-    visible = is_observable_fixed(ego.state, veh.state, env) 
+function measure(sensor::GaussianSensor, ego::Vehicle, veh::Vehicle, roadway::Roadway, obstacles::Vector{ConvexPolygon}, rng::AbstractRNG)
+    occluded = occlusion_checker(ego.state, veh.state, obstacles) 
     FN = rand(rng) < sensor.false_negative_rate
-    if !visible || FN
+    if occluded || FN
         return nothing 
     else
         dist = sqrt((ego.state.posG.x - veh.state.posG.x)^2 + (ego.state.posG.y - veh.state.posG.y)^2)
@@ -48,13 +48,13 @@ function measure(sensor::NoisySensor, ego::Vehicle, veh::Vehicle, env::E, rng::A
                        veh.state.posG.y + pos_std*randn(rng),
                        veh.state.posG.θ)
         z_v = veh.state.v + vel_std*randn(rng)
-        return VehicleState(z_pos, env.roadway, z_v)
+        return VehicleState(z_pos, roadway, z_v)
     end
 end
 
-function obs_weight(sensor::NoisySensor, ego::VehicleState, obs::Union{Void, VehicleState}, veh::Union{Void, VehicleState}, env::E) where E <: OccludedEnv
+function obs_weight(sensor::GaussianSensor, ego::VehicleState, obs::Union{Void, VehicleState}, veh::Union{Void, VehicleState}, obstacles::Vector{ConvexPolygon}) 
     weight = 1.0
-    visible = veh != nothing && is_observable_fixed(ego, veh, env) 
+    visible = veh != nothing && !occlusion_checker(ego, veh, obstacles) 
     if !visible
         if obs == nothing
             return weight
@@ -75,13 +75,13 @@ function obs_weight(sensor::NoisySensor, ego::VehicleState, obs::Union{Void, Veh
     end
 end
 
-@with_kw struct NoisySensorOverlay <: SceneOverlay
-    sensor::NoisySensor = NoisySensor()
+@with_kw struct GaussianSensorOverlay <: SceneOverlay
+    sensor::GaussianSensor = GaussianSensor()
     o::Vector{Vehicle} = Vector{Vehicle}()
     color::Colorant = RGBA(0.976, 0.592, 0.122, 0.7) # orange
 end
 
-function AutoViz.render!(rendermodel::RenderModel, overlay::NoisySensorOverlay, scene::Scene, roadway::R) where R
+function AutoViz.render!(rendermodel::RenderModel, overlay::GaussianSensorOverlay, scene::Scene, roadway::R) where R
     for veh in overlay.o 
         p = veh.state.posG
         add_instruction!(rendermodel, render_vehicle, (p.x, p.y, p.θ, veh.def.length, veh.def.width, overlay.color))

@@ -2,8 +2,8 @@ module AutomotiveSensors
 
 using AutomotiveDrivingModels
 using AutoViz
-using AutomotivePOMDPs
 using Parameters
+using StaticArrays
 
 abstract type AbstractSensor end
 abstract type AbstractNoiseModel end
@@ -17,9 +17,13 @@ include("noise_model.jl")
 export 
     AbstractSensor,
     measure,
-    NoisySensor,
-    NoisySensorOverlay
+    GaussianSensor,
+    GaussianSensorOverlay,
+    occlusion_checker,
+    OcclusionOverlay
 
-include("noisy_sensor.jl")
+include("Gaussian_sensor.jl")
+include("occlusion_checker.jl")
+include("rendering.jl")
 
 end
