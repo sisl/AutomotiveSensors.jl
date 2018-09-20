@@ -31,7 +31,7 @@ function random_pedestrian(roadway::Roadway, scene::Scene, rng::AbstractRNG, ped
 
     ped_state = VehicleState(posF, roadway, v0);
 
-    return Vehicle(ped_state, ped_def, 100+length(scene))
+    return Vehicle(ped_state, ped_def, 101)
 end
 
 function random_car(roadway::Roadway, scene::Scene, rng::AbstractRNG, car_max_speed::Float64=2.0, car_def::VehicleDef=VehicleDef())
@@ -42,7 +42,7 @@ function random_car(roadway::Roadway, scene::Scene, rng::AbstractRNG, car_max_sp
 
     car_state = VehicleState(Frenet(lane, s0), roadway, v0)
 
-    return Vehicle(car_state, car_def, length(scene)+1)
+    return Vehicle(car_state, car_def, 2)
 end
 
 function get_car_lanes(roadway::Roadway)
