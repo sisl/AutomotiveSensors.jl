@@ -23,6 +23,7 @@ export
     OcclusionOverlay
 
 include("gaussian_sensor.jl")
+include("false_positive.jl")
 include("occlusion_checker.jl")
 include("rendering.jl")
 
