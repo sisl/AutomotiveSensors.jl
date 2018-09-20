@@ -64,9 +64,9 @@ function obs_weight(sensor::GaussianSensor, ego::VehicleState, obs::Union{Void, 
     visible = veh != nothing && !occlusion_checker(ego, veh, obstacles) 
     if !visible
         if obs == nothing
-            return weight
+            return weight*(1. - sensor.false_positive_rate)
         else
-            return 0. # should handle false positive
+            return weight*sensor.false_positive_rate # should handle false positive
         end
     else
         if obs == nothing
