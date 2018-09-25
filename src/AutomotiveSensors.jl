@@ -5,8 +5,18 @@ using AutoViz
 using Parameters
 using StaticArrays
 
+export 
+    AbstractSensor,
+    measure
+
 abstract type AbstractSensor end
 abstract type AbstractNoiseModel end
+
+export 
+    occlusion_checker,
+    OcclusionOverlay
+
+include("occlusion_checker.jl")
 
 export 
     AbstractNoiseModel,
@@ -14,17 +24,16 @@ export
 
 include("noise_model.jl")
 
-export 
-    AbstractSensor,
-    measure,
+export
     GaussianSensor,
-    GaussianSensorOverlay,
-    occlusion_checker,
-    OcclusionOverlay
+    GaussianSensorOverlay
 
 include("gaussian_sensor.jl")
 include("false_positive.jl")
-include("occlusion_checker.jl")
-include("rendering.jl")
+
+export
+    PerfectSensor
+
+include("perfect_sensor.jl")
 
 end
