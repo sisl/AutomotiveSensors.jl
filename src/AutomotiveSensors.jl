@@ -4,6 +4,7 @@ using AutomotiveDrivingModels
 using AutoViz
 using Parameters
 using StaticArrays
+using Random
 
 export 
     AbstractSensor,

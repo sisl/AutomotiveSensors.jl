@@ -1,4 +1,3 @@
-
 """
 returns true if vehicle b is occluded by `obs` from vehicle a, false otherwise. 
 Occlusion checking relies on ray tracing and a the parallel axis theorem to check for collision between the ray and the obstacle.
@@ -59,6 +58,7 @@ end
 
 
 #TODO Move to AutomotiveDrivingModels.jl
+# Duplicate with AutomotivePOMDPs
 ### POLYGON INTERSECTION USING PARALLEL AXIS THEOREM
 
 """ 
@@ -66,7 +66,7 @@ end
 Check if two convex polygons overlap, using the parallel axis theorem
 a polygon is a nx2 matrix where n in the number of verteces
 http://gamemath.com/2011/09/detecting-whether-two-convex-polygons-overlap/ 
-  /!\ edges needs to be ordered
+  /!\\ edges needs to be ordered
 """
 function overlap(poly_a::SMatrix{M, 2, Float64},
                 poly_b::SMatrix{N, 2, Float64}) where {M,N}
@@ -86,7 +86,7 @@ end
     find_separating_axis(poly_a::SMatrix{4, 2, Float64}, poly_b::SMatrix{4, 2, Float64})
 
 build a list of candidate separating axes from the edges of a
-  /!\ edges needs to be ordered
+  /!\\ edges needs to be ordered
 """
 function find_separating_axis(poly_a::SMatrix{M, 2, Float64},
                               poly_b::SMatrix{N, 2, Float64}) where {M, N}
