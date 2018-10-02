@@ -36,7 +36,7 @@ function measure(sensor::GaussianSensor, ego::Vehicle, scene::Scene, roadway::Ro
         false_car = car_false_positive(sensor.false_positive_rate, roadway, scene, obstacles, sensor.rng)
         false_car == nothing ? nothing : push!(obs, false_car)
         false_ped = ped_false_positive(sensor.false_positive_rate, roadway, scene, obstacles, sensor.rng)
-        false_ped == nothing ? nothing: push!(obs, false_ped)
+        false_ped == nothing ? nothing : push!(obs, false_ped)
     end
     return obs
 end
@@ -59,7 +59,7 @@ function measure(sensor::GaussianSensor, ego::Vehicle, veh::Vehicle, roadway::Ro
 end
 
 
-function obs_weight(sensor::GaussianSensor, ego::VehicleState, obs::Union{Void, VehicleState}, veh::Union{Void, VehicleState}, obstacles::Vector{ConvexPolygon}) 
+function obs_weight(sensor::GaussianSensor, ego::VehicleState, obs::Union{Nothing, VehicleState}, veh::Union{Nothing, VehicleState}, obstacles::Vector{ConvexPolygon}) 
     weight = 1.0
     visible = veh != nothing && !occlusion_checker(ego, veh, obstacles) 
     if !visible
