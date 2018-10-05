@@ -41,7 +41,7 @@ end
 end
 
 function AutoViz.render!(rendermodel::RenderModel, overlay::OcclusionOverlay, scene::Scene, roadway::R) where R
-    ego = scene[findfirst(scene, overlay.egoid)]
+    ego = scene[findfirst(overlay.egoid, scene)]
     #Display ray
     for veh in scene 
         if veh.id == overlay.egoid
