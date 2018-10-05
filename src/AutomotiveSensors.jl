@@ -5,6 +5,7 @@ using AutoViz
 using Parameters
 using StaticArrays
 using Random
+using LinearAlgebra
 
 export 
     AbstractSensor,
