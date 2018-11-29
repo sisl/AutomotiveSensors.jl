@@ -8,8 +8,15 @@ Sensor models to work with AutomotiveDrivingModels.jl
 
 ## Installation 
 
+To install this package and its dependencies, run the following in the julia REPL.
+
 ```julia
-Pkg.clone("https://github.com/sisl/AutomotiveSensors.jl)
+using Pkg
+Pkg.add(PackageSpec(url="https://github.com/sisl/Vec.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/Records.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/AutomotiveDrivingModels.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/AutoViz.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/AutomotiveSensors.jl"))
 ```
 
 ## Models 

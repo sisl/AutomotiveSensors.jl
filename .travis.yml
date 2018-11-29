@@ -10,6 +10,10 @@ notifications:
   email: false
 git:
   depth: 99999999
+  
+script:
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - julia --project --check-bounds=yes -e 'using Pkg; Pkg.add(PackageSpec(url="https://github.com/sisl/Vec.jl")); Pkg.add(PackageSpec(url="https://github.com/sisl/Records.jl")); Pkg.add(PackageSpec(url="https://github.com/sisl/AutomotiveDrivingModels.jl")); Pkg.add(PackageSpec(url="https://github.com/sisl/AutoViz.jl")); Pkg.build("AutomotiveSensors"); Pkg.test("AutomotiveSensors"; coverage=true)'
 
 after_success:
   # push coverage results to Coveralls
