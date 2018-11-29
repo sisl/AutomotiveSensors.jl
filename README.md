@@ -5,7 +5,7 @@ Sensor models to work with AutomotiveDrivingModels.jl
 ## Installation 
 
 ```julia
-Pkg.clone("https://github.com/sisl/AutomotiveSensors.jl)
+Pkg.clone("https://github.com/sisl/AutomotiveSensors.jl")
 ```
 
 ## Models 
