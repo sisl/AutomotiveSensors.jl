@@ -1,5 +1,6 @@
 using AutomotiveSensors
 using AutomotiveDrivingModels
+using Test
 
 @testset "lidar test" begin
    #=

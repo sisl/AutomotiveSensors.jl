@@ -1,11 +1,22 @@
 # AutomotiveSensors
 
+[![Build Status](https://travis-ci.org/sisl/AutomotiveSensors.jl.svg?branch=master)](https://travis-ci.org/sisl/AutomotiveSensors.jl)
+[![CodeCov](https://codecov.io/gh/sisl/AutomotiveSensors.jl/branch/master/graph/badge.svg)](https://codecov.io/gh/sisl/AutomotiveSensors.jl)
+[![Coveralls](https://coveralls.io/repos/github/sisl/AutomotiveSensors.jl/badge.svg?branch=master)](https://coveralls.io/github/sisl/AutomotiveSensors.jl?branch=master)
+
 Sensor models to work with AutomotiveDrivingModels.jl
 
 ## Installation 
 
+To install this package and its dependencies, run the following in the julia REPL.
+
 ```julia
-Pkg.clone("https://github.com/sisl/AutomotiveSensors.jl")
+using Pkg
+Pkg.add(PackageSpec(url="https://github.com/sisl/Vec.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/Records.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/AutomotiveDrivingModels.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/AutoViz.jl"))
+Pkg.add(PackageSpec(url="https://github.com/sisl/AutomotiveSensors.jl"))
 ```
 
 ## Models 
