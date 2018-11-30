@@ -38,4 +38,19 @@ export
 
 include("perfect_sensor.jl")
 
+
+# Raunak adding lidar sensor stuff
+export
+    LidarSensor,
+    nbeams,
+    observe!,
+    RoadlineLidarSensor,
+    nlanes,
+    LanePortion,
+    RoadwayLidarCulling,
+    ensure_leaf_in_rlc!,
+    get_lane_portions
+
+include("lidar_sensors.jl")
+
 end
