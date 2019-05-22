@@ -6,6 +6,7 @@ using Parameters
 using StaticArrays
 using Random
 using LinearAlgebra
+using Distributions
 
 export 
     AbstractSensor,
