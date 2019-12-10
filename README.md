@@ -8,6 +8,12 @@ Sensor models to work with AutomotiveDrivingModels.jl
 
 ## Installation 
 
+Using the SISL registry (recommended):
+```julia 
+] registry add https://github.com/sisl/Registry 
+] add AutomotiveSensors
+```
+
 To install this package and its dependencies, run the following in the julia REPL.
 
 ```julia
