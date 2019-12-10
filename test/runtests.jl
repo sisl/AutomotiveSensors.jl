@@ -26,3 +26,19 @@ end
     @test obs[1] == veh1 
     @test obs[2] == veh2
 end
+
+@testset "gaussian sensor" begin 
+    sensor = GaussianSensor(false_positive_rate=0.0, false_negative_rate=0.0) 
+    roadway = gen_straight_roadway(1, 100.0)
+
+    ego = Vehicle(VehicleState(VecSE2(20.0, 0.0, 0.0), 5.0), VehicleDef(), 1)
+    veh1 = Vehicle(VehicleState(VecSE2(30.0, 0.0, 0.0), 5.0), VehicleDef(), 2)
+    veh2 = Vehicle(VehicleState(VecSE2(10.0, 0.0, 0.0), 5.0), VehicleDef(), 3)
+    scene = Scene([ego, veh1, veh2])
+
+    obs = measure(sensor, ego, scene, roadway, ConvexPolygon[])
+
+    @test length(obs) == 2
+
+    @test AutomotiveSensors.obs_weight(sensor, ego.state, obs[1].state, veh1.state, ConvexPolygon[]) > 0.0
+end

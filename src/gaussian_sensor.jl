@@ -11,12 +11,12 @@ FP/FN
 Late detection?
 Position noise depends on distance
 """
-@with_kw struct GaussianSensor{P <: AbstractNoiseModel, V <: AbstractNoiseModel} <: AbstractSensor
+@with_kw struct GaussianSensor{P <: AbstractNoiseModel, V <: AbstractNoiseModel, R<:AbstractRNG} <: AbstractSensor
     pos_noise::P = LinearNoise()
     vel_noise::V = LinearNoise()
     false_positive_rate::Float64 = 0.1
     false_negative_rate::Float64 = 0.1
-    rng::AbstractRNG = MersenneTwister(1)
+    rng::R = Random.GLOBAL_RNG
 end
 
 
