@@ -20,8 +20,8 @@ Position noise depends on distance
 end
 
 
-function measure(sensor::GaussianSensor, ego::Vehicle, scene::Scene, roadway::Roadway, obstacles::Vector{ConvexPolygon})
-    obs = Vector{Vehicle}()
+function measure(sensor::GaussianSensor, ego::Entity, scene::EntityScene{S,D,I}, roadway::Roadway, obstacles::Vector{ConvexPolygon}) where {S,D,I}
+    obs = Vector{Entity{VehicleState, D, I}}()
     sizehint!(obs, 10) #XXX
     for veh in scene
         if veh.id == ego.id
@@ -29,7 +29,7 @@ function measure(sensor::GaussianSensor, ego::Vehicle, scene::Scene, roadway::Ro
         end
         zveh = measure(sensor, ego, veh, roadway, obstacles, sensor.rng)
         if zveh != nothing 
-            push!(obs, Vehicle(zveh, veh.def, veh.id))
+            push!(obs, Entity(zveh, veh.def, veh.id))
         end
     end
     if isempty(obs)
@@ -41,18 +41,18 @@ function measure(sensor::GaussianSensor, ego::Vehicle, scene::Scene, roadway::Ro
     return obs
 end
 
-function measure(sensor::GaussianSensor, ego::Vehicle, veh::Vehicle, roadway::Roadway, obstacles::Vector{ConvexPolygon}, rng::AbstractRNG)
+function measure(sensor::GaussianSensor, ego::Entity, veh::Entity, roadway::Roadway, obstacles::Vector{ConvexPolygon}, rng::AbstractRNG)
     occluded = occlusion_checker(ego.state, veh.state, obstacles) 
     FN = rand(rng) < sensor.false_negative_rate
     if occluded || FN
         return nothing 
     else
-        dist = sqrt((ego.state.posG.x - veh.state.posG.x)^2 + (ego.state.posG.y - veh.state.posG.y)^2)
+        dist = sqrt((posg(ego.state).x - posg(veh.state).x)^2 + (posg(ego.state).y - posg(veh.state).y)^2)
         pos_std = noise(sensor.pos_noise, dist)
         vel_std = noise(sensor.vel_noise, dist)
-        z_pos = VecSE2(veh.state.posG.x + pos_std*randn(rng),
-                       veh.state.posG.y + pos_std*randn(rng),
-                       veh.state.posG.θ)
+        z_pos = VecSE2(posg(veh.state).x + pos_std*randn(rng),
+                       posg(veh.state).y + pos_std*randn(rng),
+                       posg(veh.state).θ)
         z_v = veh.state.v + vel_std*randn(rng)
         return VehicleState(z_pos, roadway, z_v)
     end
@@ -82,16 +82,19 @@ function obs_weight(sensor::GaussianSensor, ego::VehicleState, obs::Union{Nothin
     end
 end
 
-@with_kw struct GaussianSensorOverlay <: SceneOverlay
+@with_kw struct GaussianSensorOverlay{E<:Entity}
     sensor::GaussianSensor = GaussianSensor()
-    o::Vector{Vehicle} = Vector{Vehicle}()
+    o::Vector{E} = Vector{E}()
     color::Colorant = RGBA(0.976, 0.592, 0.122, 0.7) # orange
 end
 
-function AutoViz.render!(rendermodel::RenderModel, overlay::GaussianSensorOverlay, scene::Scene, roadway::R) where R
+function AutomotiveVisualization.add_renderable!(rendermodel::RenderModel, overlay::GaussianSensorOverlay, scene::Scene, roadway::R) where R
     for veh in overlay.o 
-        p = veh.state.posG
-        add_instruction!(rendermodel, render_vehicle, (p.x, p.y, p.θ, veh.def.length, veh.def.width, overlay.color))
+        p = posg(veh.state)
+        # add_instruction!(rendermodel, render_vehicle, (p.x, p.y, p.θ, veh.def.length, veh.def.width, overlay.color))
+        add_instruction!(rendermodel, render_vehicle, 
+                            (p.x, p.y, p.θ, 
+                            veh.def.length, veh.def.width, overlay.color,ARGB(1.,1.,1.,0.),ARGB(1.,1.,1.,0.)))
     end
     return rendermodel
 end
