@@ -9,7 +9,7 @@ julia:
   - 1
   - nightly
 
-matrix:
+jobs:
   allow_failures:
     - os: windows
     - julia: nightly
