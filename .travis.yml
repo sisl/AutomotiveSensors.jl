@@ -9,9 +9,10 @@ julia:
   - 1
   - nightly
 
-allow_failures:
-  - os: windows
-  - julia: nightly
+matrix:
+  allow_failures:
+    - os: windows
+    - julia: nightly
 
 notifications:
   email: false
