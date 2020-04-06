@@ -8,21 +8,22 @@ using Random
 using LinearAlgebra
 using Distributions
 
-export 
+export
     AbstractSensor,
     measure
 
 abstract type AbstractSensor end
 abstract type AbstractNoiseModel end
 
-export 
+export
     occlusion_checker,
     OcclusionOverlay
 
 include("occlusion_checker.jl")
 
-export 
+export
     AbstractNoiseModel,
+    ConstantNoise,
     LinearNoise
 
 include("noise_model.jl")
