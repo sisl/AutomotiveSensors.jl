@@ -1,5 +1,5 @@
 using AutomotiveSensors
-using AutomotiveDrivingModels
+using AutomotiveSimulator
 using Test
 
 @testset "occlusion checker" begin 
@@ -16,9 +16,9 @@ end
     sensor = PerfectSensor() 
     roadway = gen_straight_roadway(1, 100.0)
 
-    ego = Vehicle(VehicleState(VecSE2(20.0, 0.0, 0.0), 5.0), VehicleDef(), 1)
-    veh1 = Vehicle(VehicleState(VecSE2(30.0, 0.0, 0.0), 5.0), VehicleDef(), 2)
-    veh2 = Vehicle(VehicleState(VecSE2(10.0, 0.0, 0.0), 5.0), VehicleDef(), 3)
+    ego = Entity(VehicleState(VecSE2(20.0, 0.0, 0.0), 5.0), VehicleDef(), 1)
+    veh1 = Entity(VehicleState(VecSE2(30.0, 0.0, 0.0), 5.0), VehicleDef(), 2)
+    veh2 = Entity(VehicleState(VecSE2(10.0, 0.0, 0.0), 5.0), VehicleDef(), 3)
     scene = Scene([ego, veh1, veh2])
 
     obs = measure(sensor, ego, scene, roadway, ConvexPolygon[])
@@ -31,9 +31,9 @@ end
     sensor = GaussianSensor(false_positive_rate=0.0, false_negative_rate=0.0) 
     roadway = gen_straight_roadway(1, 100.0)
 
-    ego = Vehicle(VehicleState(VecSE2(20.0, 0.0, 0.0), 5.0), VehicleDef(), 1)
-    veh1 = Vehicle(VehicleState(VecSE2(30.0, 0.0, 0.0), 5.0), VehicleDef(), 2)
-    veh2 = Vehicle(VehicleState(VecSE2(10.0, 0.0, 0.0), 5.0), VehicleDef(), 3)
+    ego = Entity(VehicleState(VecSE2(20.0, 0.0, 0.0), 5.0), VehicleDef(), 1)
+    veh1 = Entity(VehicleState(VecSE2(30.0, 0.0, 0.0), 5.0), VehicleDef(), 2)
+    veh2 = Entity(VehicleState(VecSE2(10.0, 0.0, 0.0), 5.0), VehicleDef(), 3)
     scene = Scene([ego, veh1, veh2])
 
     obs = measure(sensor, ego, scene, roadway, ConvexPolygon[])

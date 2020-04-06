@@ -3,24 +3,23 @@ language: julia
 os:
   - linux
   - windows
+  - osx
 
 julia:
-  - 1.0
-  - 1.1
-  - 1.2
+  - 1
   - nightly
+
+jobs:
+  allow_failures:
+    - os: windows
+    - julia: nightly
+
 notifications:
   email: false
 git:
   depth: 99999999
 
-matrix:
- allow_failures:
- - julia: nightly
-
 script:
-  - git clone https://github.com/JuliaRegistries/General  $(julia -e 'import Pkg; println(joinpath(Pkg.depots1(), "registries", "General"))')  
-  - git clone https://github.com/sisl/Registry  $(julia -e 'import Pkg; println(joinpath(Pkg.depots1(), "registries", "SISL"))')  
   - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia --project --color=yes -e 'import Pkg; Pkg.build(); Pkg.test(coverage=true)'
 

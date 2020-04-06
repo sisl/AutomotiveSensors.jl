@@ -1,7 +1,7 @@
 module AutomotiveSensors
 
-using AutomotiveDrivingModels
-using AutoViz
+using AutomotiveSimulator
+using AutomotiveVisualization
 using Parameters
 using StaticArrays
 using Random
