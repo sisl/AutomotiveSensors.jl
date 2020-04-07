@@ -15,6 +15,7 @@ StaticArrays = "90137ffa-7385-5640-81b9-e52037218182"
 [compat]
 AutomotiveSimulator = "0.1"
 AutomotiveVisualization = "0.1"
+Distributions = "0.23"
 Parameters = "0.12"
 
 [extras]
