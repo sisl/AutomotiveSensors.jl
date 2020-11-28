@@ -17,7 +17,7 @@ AutomotiveSimulator = "0.1"
 AutomotiveVisualization = "0.1"
 Distributions = "0.23, 0.24"
 Parameters = "0.12"
-StaticArrays = "0.12"
+StaticArrays = "0.12, 1.0"
 
 [extras]
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
